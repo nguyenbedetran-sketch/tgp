@@ -1,0 +1,37 @@
+# Environment / secrets
+.env
+*.env
+!.env.example
+
+# Python
+backend/venv/
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+
+# Database (runtime data, not source)
+database/*.db
+database/*.sqlite3
+
+# Logs
+logs/*.log
+**/logs/*.log
+
+# Uploaded media (runtime data, not source)
+backend/static/uploads/*
+!backend/static/uploads/.gitkeep
+
+# C++ build artifacts
+cpp/tgp_calculator
+cpp/build/
+cpp/*.o
+
+# Java build artifacts
+java/target/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

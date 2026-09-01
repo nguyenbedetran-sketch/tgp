@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản trị | Trần Gia Phát</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assets/images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+
+<!-- ======================= LOGIN VIEW ======================= -->
+<div class="login-shell" id="login-view">
+  <div class="login-card">
+    <div class="brand"><img src="/assets/images/logo.png" alt="Logo" style="height:42px"><span class="brand-text"><strong style="color:var(--c-navy-900)">TRẦN GIA PHÁT</strong></span></div>
+    <h1>Đăng nhập quản trị</h1>
+    <div class="sub">Dành cho quản trị viên nội bộ</div>
+    <form id="login-form" novalidate>
+      <div class="form-field" style="margin-bottom:16px">
+        <label>Tên đăng nhập</label>
+        <input type="text" name="username" required autofocus>
+      </div>
+      <div class="form-field" style="margin-bottom:20px">
+        <label>Mật khẩu</label>
+        <input type="password" name="password" required>
+      </div>
+      <div class="field-error" id="login-error" style="margin-bottom:10px"></div>
+      <button type="submit" class="btn btn-primary btn-block" id="login-submit">Đăng nhập</button>
+    </form>
+    <p style="text-align:center;font-size:.82rem;color:var(--text-muted);margin-top:18px">
+      Chưa có tài khoản? Xem hướng dẫn tạo admin trong README (<code>python create_admin.py</code>).
+    </p>
+    <p style="text-align:center;margin-top:10px"><a href="/index.html" style="font-size:.85rem;color:var(--text-muted)">← Về trang chủ</a></p>
+  </div>
+</div>
+
+<!-- ======================= ADMIN SHELL ======================= -->
+<div class="admin-shell" id="admin-view" style="display:none">
+  <aside class="admin-sidebar">
+    <div class="brand"><img src="/assets/images/logo.png" alt="Logo" style="height:36px"><span class="brand-text"><strong>TRẦN GIA PHÁT</strong><span style="font-size:.6rem">QUẢN TRỊ</span></span></div>
+    <nav>
+      <a class="admin-nav-item active" data-section="dashboard" href="#">Tổng quan</a>
+      <a class="admin-nav-item" data-section="hero" href="#">Slide trang chủ</a>
+      <a class="admin-nav-item" data-section="strengths" href="#">Điểm mạnh</a>
+      <a class="admin-nav-item" data-section="projects" href="#">Dự án</a>
+      <a class="admin-nav-item" data-section="services" href="#">Dịch vụ</a>
+      <a class="admin-nav-item" data-section="blog" href="#">Bài viết</a>
+      <a class="admin-nav-item" data-section="contacts" href="#">Yêu cầu tư vấn</a>
+      <a class="admin-nav-item" data-section="team" href="#">Đội ngũ</a>
+      <a class="admin-nav-item" data-section="testimonials" href="#">Đánh giá</a>
+      <a class="admin-nav-item" data-section="settings" href="#">Thông tin công ty</a>
+    </nav>
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)">
+      <button class="admin-nav-item" id="logout-btn" style="width:100%;border:none;background:none;cursor:pointer;text-align:left">Đăng xuất</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 id="section-title">Tổng quan</h1>
+      <div class="admin-user">Xin chào, <strong id="current-user-name">—</strong></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section data-panel="dashboard">
+      <div class="stat-cards" id="dashboard-stats"></div>
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Yêu cầu tư vấn gần đây</h2><a href="#" data-section="contacts" class="btn btn-outline-dark btn-sm">Xem tất cả</a></div>
+        <table class="data-table"><thead><tr><th>Họ tên</th><th>SĐT</th><th>Loại công trình</th><th>Trạng thái</th><th>Thời gian</th></tr></thead>
+        <tbody id="recent-contacts-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- HERO SLIDES -->
+    <section data-panel="hero" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Slide trang chủ</h2><button class="btn btn-primary btn-sm" onclick="openHeroSlideModal()">+ Thêm slide</button></div>
+        <table class="data-table"><thead><tr><th>Ảnh</th><th>Tiêu đề</th><th>Thứ tự</th><th></th></tr></thead>
+        <tbody id="hero-slides-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- STRENGTHS -->
+    <section data-panel="strengths" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Điểm mạnh (trang chủ)</h2><button class="btn btn-primary btn-sm" onclick="openStrengthModal()">+ Thêm điểm mạnh</button></div>
+        <table class="data-table"><thead><tr><th>Ảnh</th><th>Tiêu đề</th><th>Mô tả</th><th>Thứ tự</th><th></th></tr></thead>
+        <tbody id="strengths-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section data-panel="projects" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head">
+          <h2>Danh sách dự án</h2>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline-dark btn-sm" onclick="exportData('projects','csv')">Xuất CSV</button>
+            <button class="btn btn-primary btn-sm" onclick="openProjectModal()">+ Thêm dự án</button>
+          </div>
+        </div>
+        <table class="data-table"><thead><tr><th>Tên dự án</th><th>Loại</th><th>Địa điểm</th><th>Trạng thái</th><th></th></tr></thead>
+        <tbody id="projects-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section data-panel="services" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Danh sách dịch vụ</h2><button class="btn btn-primary btn-sm" onclick="openServiceModal()">+ Thêm dịch vụ</button></div>
+        <table class="data-table"><thead><tr><th>Mã</th><th>Tên dịch vụ</th><th>Mô tả ngắn</th><th></th></tr></thead>
+        <tbody id="services-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section data-panel="blog" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Bài viết</h2><button class="btn btn-primary btn-sm" onclick="openBlogModal()">+ Viết bài mới</button></div>
+        <table class="data-table"><thead><tr><th>Tiêu đề</th><th>Chuyên mục</th><th>Trạng thái</th><th>Ngày đăng</th><th></th></tr></thead>
+        <tbody id="blog-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- CONTACTS -->
+    <section data-panel="contacts" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head">
+          <h2>Yêu cầu tư vấn từ khách hàng</h2>
+          <div style="display:flex;gap:8px">
+            <select id="contact-status-filter" style="padding:8px 12px;border-radius:6px;border:1px solid var(--border-soft)">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="new">Mới</option>
+              <option value="contacted">Đã liên hệ</option>
+              <option value="closed">Đã đóng</option>
+            </select>
+            <button class="btn btn-outline-dark btn-sm" onclick="exportData('contacts','csv')">Xuất CSV</button>
+          </div>
+        </div>
+        <table class="data-table"><thead><tr><th>Họ tên</th><th>SĐT</th><th>Email</th><th>Loại công trình</th><th>Trạng thái</th><th>Thời gian</th><th></th></tr></thead>
+        <tbody id="contacts-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section data-panel="team" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Đội ngũ</h2><button class="btn btn-primary btn-sm" onclick="openTeamModal()">+ Thêm thành viên</button></div>
+        <table class="data-table"><thead><tr><th>Họ tên</th><th>Chức vụ</th><th>Chuyên môn</th><th></th></tr></thead>
+        <tbody id="team-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section data-panel="testimonials" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Đánh giá khách hàng</h2><button class="btn btn-primary btn-sm" onclick="openTestimonialModal()">+ Thêm đánh giá</button></div>
+        <table class="data-table"><thead><tr><th>Khách hàng</th><th>Dự án</th><th>Đánh giá</th><th>Nội dung</th><th></th></tr></thead>
+        <tbody id="testimonials-body"></tbody></table>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section data-panel="settings" style="display:none">
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Thông tin công ty</h2></div>
+        <form id="settings-form" class="form-grid">
+          <div class="form-field"><label>Tên công ty</label><input name="company_name"></div>
+          <div class="form-field"><label>Tên thương hiệu</label><input name="brand_name"></div>
+          <div class="form-field"><label>Số điện thoại</label><input name="phone"></div>
+          <div class="form-field"><label>Hotline</label><input name="hotline"></div>
+          <div class="form-field"><label>Email công ty</label><input name="email"></div>
+          <div class="form-field"><label>Mã số thuế</label><input name="tax_code"></div>
+          <div class="form-field full"><label>Địa chỉ công ty</label><input name="address"></div>
+          <div class="form-field"><label>Giờ làm việc</label><input name="working_hours"></div>
+          <div class="form-field"><label>Bản đồ (URL nhúng)</label><input name="map_embed_url"></div>
+          <div class="form-field"><label>Link Facebook</label><input name="facebook_url"></div>
+          <div class="form-field"><label>Link Zalo</label><input name="zalo_url"></div>
+          <div class="form-field"><label>Link Youtube</label><input name="youtube_url"></div>
+          <div class="form-field"><label>Link TikTok</label><input name="tiktok_url"></div>
+          <div class="form-field"><label>Số năm kinh nghiệm (counter)</label><input name="stat_years" type="number"></div>
+          <div class="form-field"><label>Số dự án (counter)</label><input name="stat_projects" type="number"></div>
+          <div class="form-field"><label>Số khách hàng (counter)</label><input name="stat_clients" type="number"></div>
+          <div class="form-field"><label>Số kỹ sư & KTS (counter)</label><input name="stat_engineers" type="number"></div>
+
+          <div class="form-field full" style="border-top:1px solid var(--border-soft);padding-top:20px;margin-top:4px">
+            <label style="font-weight:700;font-size:.95rem">Thanh thông báo đầu trang</label>
+          </div>
+          <div class="form-field">
+            <label>Trạng thái</label>
+            <select name="announcement_enabled">
+              <option value="false">Tắt</option>
+              <option value="true">Bật</option>
+            </select>
+          </div>
+          <div class="form-field"><label>Liên kết khi bấm "Xem ngay" (tuỳ chọn)</label><input name="announcement_link" placeholder="/pages/lien-he.html"></div>
+          <div class="form-field full"><label>Nội dung thông báo</label><input name="announcement_text" placeholder="Ví dụ: Ưu đãi giảm 10% cho khách liên hệ trong tháng này"></div>
+
+          <div class="form-field full">
+            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ======================= GENERIC MODAL ======================= -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2 id="modal-title">Tiêu đề</h2>
+    <form id="modal-form"></form>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/constants.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# Tran Gia Phat backend - Python dependencies
+#
+# Note on package choices: FastAPI + SQLAlchemy + passlib/bcrypt were the
+# original preference, but this project's build/CI environment could not
+# resolve packages from PyPI. The backend was therefore built on Flask +
+# the Python standard library (sqlite3 for persistence, hashlib.pbkdf2_hmac
+# for password hashing) plus PyJWT, which were resolvable. If your
+# environment *does* have PyPI access, these pinned versions are known-good;
+# feel free to `pip install -r requirements.txt` as usual.
+
+Flask==3.1.3
+Werkzeug==3.1.8
+PyJWT==2.12.1
+python-dotenv==1.2.2
+python-multipart==0.0.26
+
+# --- Optional (only needed if you swap sqlite3/pbkdf2 for the originally
+#     specified stack once PyPI access is available in your environment) ---
+# fastapi
+# uvicorn[standard]
+# sqlalchemy
+# pydantic-settings
+# passlib[bcrypt]
+# email-validator

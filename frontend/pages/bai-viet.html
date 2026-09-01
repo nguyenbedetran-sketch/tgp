@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Bài viết | Trần Gia Phát</title>
+<meta name="description" id="page-description" content="Bài viết từ Trần Gia Phát.">
+<link rel="icon" href="/assets/images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="/index.html" class="brand">
+      <img src="/assets/images/logo.png" alt="Logo Trần Gia Phát">
+      <span class="brand-text"><strong>TRẦN GIA PHÁT</strong><span data-setting="tagline">Tư vấn – Thiết kế – Xây dựng</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="/index.html" data-nav="index.html">Trang chủ</a>
+      <a href="/pages/gioi-thieu.html" data-nav="gioi-thieu.html">Giới thiệu</a>
+      <a href="/pages/dich-vu.html" data-nav="dich-vu.html">Dịch vụ</a>
+      <a href="/pages/du-an.html" data-nav="du-an.html">Dự án</a>
+      <a href="/pages/quy-trinh.html" data-nav="quy-trinh.html">Quy trình</a>
+      <a href="/pages/uoc-tinh-chi-phi.html" data-nav="uoc-tinh-chi-phi.html">Báo giá</a>
+      <a href="/pages/tin-tuc.html" data-nav="tin-tuc.html" class="active">Tin tức</a>
+      <a href="/pages/lien-he.html" data-nav="lien-he.html">Liên hệ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="/pages/lien-he.html" class="btn btn-primary btn-sm">Nhận tư vấn</a>
+      <button class="hamburger" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="nav-overlay"></div>
+
+<section class="page-hero" style="padding-top:150px">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center" id="post-category">Tin tức</div>
+    <h1 id="post-title">Đang tải...</h1>
+    <div class="breadcrumb"><a href="/index.html">Trang chủ</a> / <a href="/pages/tin-tuc.html">Tin tức</a> / <span id="post-title-crumb"></span></div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="two-col">
+      <article class="prose" id="post-content">Đang tải nội dung...</article>
+      <aside>
+        <div class="card" style="padding:24px">
+          <h3 style="margin-bottom:12px">Thông tin bài viết</h3>
+          <div class="blog-meta" style="flex-direction:column;gap:8px">
+            <span>Tác giả: <strong id="post-author">—</strong></span>
+            <span>Ngày đăng: <strong id="post-date">—</strong></span>
+            <span>Chuyên mục: <strong id="post-category-2">—</strong></span>
+          </div>
+          <a href="/pages/lien-he.html" class="btn btn-primary btn-block" style="margin-top:20px">Nhận tư vấn</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/index.html" class="brand"><img src="/assets/images/logo.png" alt="Logo Trần Gia Phát"><span class="brand-text"><strong>TRẦN GIA PHÁT</strong></span></a>
+        <p>Công ty TNHH Tư vấn Thiết kế Xây dựng Trần Gia Phát.</p>
+      </div>
+      <div class="footer-col"><h4>Điều hướng</h4><ul><li><a href="/index.html">Trang chủ</a></li><li><a href="/pages/tin-tuc.html">Tin tức</a></li><li><a href="/pages/lien-he.html">Liên hệ</a></li></ul></div>
+      <div class="footer-col"><h4>Dịch vụ</h4><ul><li><a href="/pages/dich-vu.html">Xem tất cả dịch vụ</a></li></ul></div>
+      <div class="footer-col"><h4>Liên hệ</h4><ul><li data-setting="address">[ĐỊA CHỈ CÔNG TY]</li><li><a href="#" data-setting="phone" data-setting-href>[SỐ ĐIỆN THOẠI]</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-setting-year>2026</span> Trần Gia Phát. All Rights Reserved.</span>
+      <span><a href="/pages/admin.html" style="opacity:.6">Quản trị</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/constants.js"></script>
+<script src="/js/main.js"></script>
+<script>
+async function loadPost() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('slug');
+  if (!slug) { document.getElementById('post-title').textContent = 'Không tìm thấy bài viết'; return; }
+  try {
+    const res = await TGP_API.get(`/api/blog/${encodeURIComponent(slug)}`, { auth: false });
+    const p = res.data;
+    document.title = `${p.title} | Trần Gia Phát`;
+    document.getElementById('page-title').textContent = `${p.title} | Trần Gia Phát`;
+    document.getElementById('page-description').setAttribute('content', p.seo_description || p.excerpt || p.title);
+    document.getElementById('post-title').textContent = p.title;
+    document.getElementById('post-title-crumb').textContent = p.title;
+    document.getElementById('post-category').textContent = p.category || 'Tin tức';
+    document.getElementById('post-category-2').textContent = p.category || '—';
+    document.getElementById('post-author').textContent = p.author || '—';
+    document.getElementById('post-date').textContent = tgpFormatDate(p.published_at || p.created_at);
+    document.getElementById('post-content').innerHTML = (p.content || '').split('\n\n').map(par => `<p>${tgpEscapeHtml(par)}</p>`).join('');
+  } catch (e) {
+    document.getElementById('post-title').textContent = 'Không tìm thấy bài viết';
+    document.getElementById('post-content').innerHTML = '<div class="empty-state">Bài viết không tồn tại hoặc đã bị gỡ bỏ. <a href="/pages/tin-tuc.html">Xem tất cả bài viết</a></div>';
+  }
+}
+document.addEventListener('DOMContentLoaded', loadPost);
+</script>
+</body>
+</html>
